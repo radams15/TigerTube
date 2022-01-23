@@ -6,10 +6,20 @@
 
 #include "Net.h"
 
+#ifdef __linux
+#define PLAYER "flatpak run org.videolan.VLC"
+#elif defined(__APPLE__)
+#define PLAYER "VLC"
+#endif
+
+#define QUALITY ""
+
 #define API_URL "http://therhys.co.uk/yt.php?url="
 
 MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, "Youtube") {
     wxMenu *menuFile = new wxMenu;
+    menuFile->Append(ID_AddSub, "&Add Subscription...\tCtrl-A",
+                     "Add a new subscription");
     menuFile->Append(wxID_EXIT);
     wxMenu *menuHelp = new wxMenu;
     menuHelp->Append(wxID_ABOUT);
@@ -42,6 +52,7 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, "Youtube") {
 
     Bind(wxEVT_MENU, &MainFrame::OnAbout, this, wxID_ABOUT);
     Bind(wxEVT_MENU, &MainFrame::OnExit, this, wxID_EXIT);
+    Bind(wxEVT_MENU, &MainFrame::AddSub, this, ID_AddSub);
 }
 void MainFrame::OnExit(wxCommandEvent& event){
     Close(true);
@@ -53,6 +64,7 @@ void MainFrame::OnAbout(wxCommandEvent& event) {
 
 void MainFrame::loadVids() {
     vids.clear();
+    table->Clear();
     vids = subs.get_vids();
     for(auto vid : vids){
         std::vector<wxString> row = {
@@ -73,22 +85,35 @@ void MainFrame::OnGridCellLeftDClick(wxGridEvent &evt) {
     VideoSelected(vid);
 }
 
+std::string chomp(std::string str){
+    if(str.at(str.length()-1) == '\n'){
+        str = str.substr(0, str.length()-1);
+    }
+
+    return str;
+}
+
 void MainFrame::playVid(std::string link) {
+    std::string command;
 #ifdef __linux
-    std::string command = "flatpak run com.github.rafostar.Clapper '" + link + "'&";
-#elif defined(__apple)
-    std::string command = "flatpak run com.github.rafostar.Clapper '" + link + "'&";
+    command = PLAYER " '" + chomp(link) + "' &";
+#elif defined(__APPLE__)
+    system("osascript -e 'quit app \"" PLAYER "\"'");
+    command = "open -a '" PLAYER "' '" + chomp(link) + "' &";
 #else
 #error "Unknown/Unsupported OS!"
 #endif
+
+    std::cout << command << std::endl;
 
     system(command.c_str());
 }
 
 void MainFrame::VideoSelected(Video vid) {
-    std::string url = API_URL+vid.link;
+    std::string url = API_URL+vid.link+"&quality=best[height<=" + std::to_string(subs.quality) + "]";
 
     std::string raw = Net::get(url).content;
+
     playVid(raw);
 }
 
@@ -105,6 +130,26 @@ void MainFrame::AutoSizeCols() {
         width=GetClientSize().GetWidth()-1;
         std::cout << width << std::endl;
         grid->SetColSize(num_cols-1,width);
+    }
+
+}
+
+void MainFrame::AddSub(wxCommandEvent& event) {
+    wxTextEntryDialog dlg(this, "Channel ID");
+    if ( dlg.ShowModal() == wxID_OK ){
+        std::string value = (std::string) dlg.GetValue();
+
+        std::cout << value << std::endl;
+
+        Channel c(value);
+
+        if(! c.get_vids().empty()){
+            subs.add_sub(c);
+
+            loadVids();
+
+            subs.save();
+        }
     }
 
 }

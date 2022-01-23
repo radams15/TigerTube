@@ -13,7 +13,7 @@
 #include <wx/grid.h>
 
 #include "Table.h"
-#include "Subscriptions.h"
+#include "Config.h"
 
 class MainFrame : public wxFrame {
 private:
@@ -23,7 +23,7 @@ private:
     Table* table;
     wxGrid* grid;
 
-    Subscriptions subs;
+    Config subs;
 
     std::vector<Video> vids;
 
@@ -37,9 +37,12 @@ private:
 
     void AutoSizeCols();
 
+    void AddSub(wxCommandEvent& event);
+
 public:
     enum {
-        ID_Table = 1
+        ID_Table = 1,
+        ID_AddSub = 2
     };
 
     MainFrame();

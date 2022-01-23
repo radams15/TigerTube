@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Channel.h"
-#include "Subscriptions.h"
+#include "Config.h"
 
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
@@ -12,6 +12,10 @@ int main(int argc, char *argv[]){
     wxEntryStart(argc, argv);
     wxTheApp->CallOnInit();
     wxTheApp->OnRun();
+
+    /*Config conf;
+
+    conf.save();*/
 
     return 0;
 }

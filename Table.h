@@ -20,6 +20,8 @@ private:
 public:
     int GetNumberRows();
 
+    void Clear();
+
     int GetNumberCols();
 
     bool IsEmptyCell(int row, int col);

@@ -2850,7 +2850,7 @@ class basic_json
     }
 
     /*!
-    @brief remove element given an iterator
+    @brief remove_sub element given an iterator
 
     Removes the element specified by iterator @a pos. Invalidates iterators and
     references at or after the point of the erase, including the end()
@@ -2861,7 +2861,7 @@ class basic_json
     If called on a primitive type other than null, the resulting JSON value
     will be `null`.
 
-    @param[in] pos iterator to the element to remove
+    @param[in] pos iterator to the element to remove_sub
     @return Iterator following the last removed element. If the iterator @a pos
     refers to the last element, the end() iterator is returned.
 
@@ -2942,7 +2942,7 @@ class basic_json
     }
 
     /*!
-    @brief remove elements given an iterator range
+    @brief remove_sub elements given an iterator range
 
     Removes the element specified by the range `[first; last)`. Invalidates
     iterators and references at or after the point of the erase, including the
@@ -2952,8 +2952,8 @@ class basic_json
     If called on a primitive type other than null, the resulting JSON value
     will be `null`.
 
-    @param[in] first iterator to the beginning of the range to remove
-    @param[in] last iterator past the end of the range to remove
+    @param[in] first iterator to the beginning of the range to remove_sub
+    @param[in] last iterator past the end of the range to remove_sub
     @return Iterator following the last removed element. If the iterator @a
     second refers to the last element, the end() iterator is returned.
 
@@ -3037,11 +3037,11 @@ class basic_json
     }
 
     /*!
-    @brief remove element from a JSON object given a key
+    @brief remove_sub element from a JSON object given a key
 
     Removes elements from a JSON object with the key value @a key.
 
-    @param[in] key value of the elements to remove
+    @param[in] key value of the elements to remove_sub
 
     @return Number of elements removed. If ObjectType is the default `std::map`
     type, the return value will always be `0` (@a key was not found) or `1` (@a
@@ -3065,11 +3065,11 @@ class basic_json
     }
 
     /*!
-    @brief remove element from a JSON array given an index
+    @brief remove_sub element from a JSON array given an index
 
     Removes element from a JSON array at the index @a idx.
 
-    @param[in] idx index of the element to remove
+    @param[in] idx index of the element to remove_sub
 
     @throw std::domain_error when called on a type other than JSON array
     @throw std::out_of_range when `idx >= size()`

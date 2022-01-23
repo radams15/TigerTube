@@ -63,3 +63,7 @@ void Table::append(const vector<wxString>& to_add) {
 void Table::set_headers(vector<wxString> new_headers) {
     headers = move(new_headers);
 }
+
+void Table::Clear() {
+    data.clear();
+}

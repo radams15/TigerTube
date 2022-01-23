@@ -15,6 +15,7 @@ namespace Net {
     };
 
     Response get(std::string url);
+    std::string get_redirect(std::string url);
 
 }
 

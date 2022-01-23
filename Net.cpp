@@ -31,3 +31,46 @@ Net::Response Net::get(std::string url) {
     }
     return (Response){-1, ""};
 }
+
+std::string Net::get_redirect(std::string url) {
+    CURL *curl;
+    CURLcode res;
+
+    long response_code;
+    char* location;
+
+    curl = curl_easy_init();
+    if(curl) {
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+
+        /* example.com is redirected, figure out the redirection! */
+
+        /* Perform the request, res will get the return code */
+        res = curl_easy_perform(curl);
+        /* Check for errors */
+        if(res != CURLE_OK) {
+            fprintf(stderr, "curl_easy_perform() failed: %s\n",
+                    curl_easy_strerror(res));
+            return "";
+        } else {
+            res = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
+            if ((res == CURLE_OK) && ((response_code / 100) != 3)) {
+                fprintf(stderr, "Not a redirect.\n");
+
+                return url;
+            } else {
+                res = curl_easy_getinfo(curl, CURLINFO_REDIRECT_URL, &location);
+
+                if ((res == CURLE_OK) && location) {
+                    printf("Redirected to: %s\n", location);
+
+                    return std::string(location);
+                }
+            }
+        }
+        curl_easy_cleanup(curl);
+    }
+
+
+    return "";
+}

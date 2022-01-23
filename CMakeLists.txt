@@ -12,6 +12,6 @@ pkg_check_modules(XML REQUIRED libxml-2.0)
 include_directories(${CURL_INCLUDE_DIRS} ${XML_INCLUDE_DIRS})
 include(${wxWidgets_USE_FILE})
 
-add_executable(youtubecli main.cpp  Net.cpp Net.h Channel.cpp Channel.h Video.cpp Video.h Subscriptions.cpp Subscriptions.h Fs.cpp Fs.h MainApp.cpp MainApp.h MainFrame.cpp MainFrame.h Table.cpp Table.h)
+add_executable(youtubecli main.cpp  Net.cpp Net.h Channel.cpp Channel.h Video.cpp Video.h Config.cpp Config.h Fs.cpp Fs.h MainApp.cpp MainApp.h MainFrame.cpp MainFrame.h Table.cpp Table.h)
 
 target_link_libraries(youtubecli ${CURL_LIBRARIES} ${XML_LIBRARIES} ${wxWidgets_LIBRARIES})

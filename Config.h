@@ -13,7 +13,7 @@
 
 using json=nlohmann::json;
 
-class Subscriptions {
+class Config {
 private:
     std::string file;
 
@@ -23,12 +23,15 @@ public:
     void save();
 
     std::vector<Channel> subs;
+    int quality = 480;
 
-    Subscriptions();
+    Config();
+
+    void add_sub(Channel c);
 
     std::vector<Video> get_vids();
 
-    void remove(std::string id);
+    void remove_sub(std::string id);
 };
 
 

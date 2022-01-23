@@ -2,21 +2,23 @@
 // Created by rhys on 27/07/2021.
 //
 
-#include "Subscriptions.h"
+#include "Config.h"
 #include "Fs.h"
 
 #include <fstream>
 #include <iostream>
 
-#include <unistd.h>
 #include <sys/types.h>
 #include <pwd.h>
 
-//#define CONF_DIR "/home/rhys/.config/"
-#define CONF_DIR "../"
+#ifdef __linux
+#define CONF_DIR "/home/rhys/.config/"
+#elif defined(__APPLE__)
+#define CONF_DIR "/Users/rhys/Library/"
+#endif
 
 
-Subscriptions::Subscriptions() {
+Config::Config() {
     this->file = std::string(CONF_DIR) + "yt_saves.json";
     this->subs.clear();
 
@@ -25,27 +27,38 @@ Subscriptions::Subscriptions() {
     }
 }
 
-void Subscriptions::load() {
+void Config::load() {
     std::ifstream in(file);
 
     json j;
 
     in >> j;
 
-    for(json id : j){
+    for(json id : j["subs"]){
         Channel c(id.get<std::string>());
         subs.push_back(c);
     }
+
+    try{
+       quality = j["quality"].get<int>();
+    }catch(std::exception& e){
+        std::cerr << "No default quality, setting to 480" << std::endl;
+    }
 }
 
-void Subscriptions::save() {
+void Config::save() {
     std::ofstream out(file);
 
-    json j = json::array();
+    json j = json::object();
+
+    json sub_list = json::array();
 
     for(Channel c : subs){
-        j.push_back(c.id);
+        sub_list.push_back(c.id);
     }
+
+    j["subs"] = sub_list;
+    j["quality"] = quality;
 
     out << std::setw(4) << j << std::endl;
 }
@@ -73,7 +86,7 @@ void* get_vid(void* ptr){
     pthread_exit(NULL);
 }
 
-std::vector<Video> Subscriptions::get_vids() {
+std::vector<Video> Config::get_vids() {
     std::vector<Video> out;
 
     std::vector<pthread_t> threads;
@@ -99,10 +112,14 @@ std::vector<Video> Subscriptions::get_vids() {
     return out;
 }
 
-void Subscriptions::remove(std::string id) {
+void Config::remove_sub(std::string id) {
     auto it = std::remove_if(subs.begin(), subs.end(), [id](Channel chan){
         return chan.id == id;
     });
 
     subs.erase(it, subs.end());
+}
+
+void Config::add_sub(Channel c) {
+    subs.push_back(c);
 }
