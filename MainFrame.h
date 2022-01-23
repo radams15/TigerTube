@@ -39,10 +39,13 @@ private:
 
     void AddSub(wxCommandEvent& event);
 
+    void ChangeQuality(wxCommandEvent& event);
+
 public:
     enum {
         ID_Table = 1,
-        ID_AddSub = 2
+        ID_AddSub = 2,
+        ID_ChangeQuality = 3
     };
 
     MainFrame();

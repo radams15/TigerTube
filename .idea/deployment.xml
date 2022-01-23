@@ -2,12 +2,13 @@
 <project version="4">
   <component name="PublishConfigData" serverName="Remote Development" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
-      <paths name="Remote Host (495c8578-d18f-4f0c-b3f5-b35af6d25e0d)">
+      <paths name="Mac (495c8578-d18f-4f0c-b3f5-b35af6d25e0d)">
         <serverdata>
           <mappings>
             <mapping deploy="/var/folders/_s/kvt6sncn06s4wzqqnwk7ddq80000z8/T/tmp.18KbOIje" local="$PROJECT_DIR$" />
           </mappings>
           <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-default-mac" />
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-default-remote-host" />
             <excludedPath local="true" path="$PROJECT_DIR$/build" />
           </excludedPaths>

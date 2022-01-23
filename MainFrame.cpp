@@ -18,8 +18,8 @@
 
 MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, "Youtube") {
     wxMenu *menuFile = new wxMenu;
-    menuFile->Append(ID_AddSub, "&Add Subscription...\tCtrl-A",
-                     "Add a new subscription");
+    menuFile->Append(ID_AddSub, "&Add Subscription...\tCtrl-A","Add a new subscription");
+    menuFile->Append(ID_ChangeQuality, "&Change Quality...\tCtrl-U","Change default video quality");
     menuFile->Append(wxID_EXIT);
     wxMenu *menuHelp = new wxMenu;
     menuHelp->Append(wxID_ABOUT);
@@ -53,6 +53,7 @@ MainFrame::MainFrame() : wxFrame(NULL, wxID_ANY, "Youtube") {
     Bind(wxEVT_MENU, &MainFrame::OnAbout, this, wxID_ABOUT);
     Bind(wxEVT_MENU, &MainFrame::OnExit, this, wxID_EXIT);
     Bind(wxEVT_MENU, &MainFrame::AddSub, this, ID_AddSub);
+    Bind(wxEVT_MENU, &MainFrame::ChangeQuality, this, ID_ChangeQuality);
 }
 void MainFrame::OnExit(wxCommandEvent& event){
     Close(true);
@@ -152,4 +153,31 @@ void MainFrame::AddSub(wxCommandEvent& event) {
         }
     }
 
+}
+
+void MainFrame::ChangeQuality(wxCommandEvent &event) {
+    wxArrayString choices;
+
+    choices.push_back("144");
+    choices.push_back("240");
+    choices.push_back("480");
+    choices.push_back("720");
+    choices.push_back("1024");
+
+    wxSingleChoiceDialog dlg(this, "Quality", "Select Quality", choices);
+
+    auto it = std::find(choices.begin(), choices.end(), std::to_string(subs.quality));
+    if(it != choices.end()){
+        int index = it-choices.begin();
+        std::cout << index << std::endl;
+        dlg.SetSelection(index);
+    }else{
+        dlg.SetSelection(2);
+    }
+
+    if ( dlg.ShowModal() == wxID_OK ) {
+        int value = atoi(((std::string) choices[dlg.GetSelection()]).c_str());
+
+        subs.quality = value;
+    }
 }

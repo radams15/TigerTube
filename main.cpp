@@ -15,7 +15,13 @@ int main(int argc, char *argv[]){
 
     /*Config conf;
 
-    conf.save();*/
+    time_t start = clock();
+
+    auto vids = conf.get_vids();
+
+    time_t end = clock();
+
+    std::cout << (end-start)/100000.0f << std::endl;*/
 
     return 0;
 }
