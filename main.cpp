@@ -2,18 +2,16 @@
 #include "Channel.h"
 #include "Subscriptions.h"
 
-int main() {
-    Subscriptions subs;
-
-    std::vector<Video> vids = subs.get_vids();
-
-    for(int i=0 ; i<vids.size() ; i++) {
-        Video video = vids[i];
-
-        std::cout << video.title << " => " << video.link << "\n";
-    }
+#include <wx/wxprec.h>
+#ifndef WX_PRECOMP
+#include <wx/wx.h>
+#endif
 
 
-    subs.save();
+int main(int argc, char *argv[]){
+    wxEntryStart(argc, argv);
+    wxTheApp->CallOnInit();
+    wxTheApp->OnRun();
+
     return 0;
 }

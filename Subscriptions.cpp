@@ -12,7 +12,8 @@
 #include <sys/types.h>
 #include <pwd.h>
 
-#define CONF_DIR "/home/rhys/.config/"
+//#define CONF_DIR "/home/rhys/.config/"
+#define CONF_DIR "../"
 
 
 Subscriptions::Subscriptions() {
@@ -92,7 +93,7 @@ std::vector<Video> Subscriptions::get_vids() {
 
 
     sort(out.begin(), out.end(), [](Video a, Video b) -> bool{
-        return a.publish_date < b.publish_date;
+        return a.publish_date > b.publish_date;
     });
 
     return out;
