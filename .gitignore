@@ -3,3 +3,5 @@
 /cmake-build-default/
 /cmake-build-default-remote-host/
 /cmake-build-default-mac/
+/cmake-build-debug/
+/cmake-build-debug-g5/

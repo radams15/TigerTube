@@ -10,8 +10,8 @@
 
 #include "Video.h"
 
-#define NAME_REGEX "<name>(.*)<\/name>"
-#define ID_REGEX "\"externalId\":\"([0-9a-zA-Z_\-]*)\""
+#define NAME_REGEX "<name>(.*)<\\/name>"
+#define ID_REGEX "\\\"externalId\\\":\\\"([0-9a-zA-Z_\\-]*)\\\""
 
 class Channel {
 private:
