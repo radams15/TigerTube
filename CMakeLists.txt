@@ -9,6 +9,9 @@ find_package(wxWidgets REQUIRED COMPONENTS core base adv)
 pkg_check_modules(CURL REQUIRED libcurl)
 pkg_check_modules(XML REQUIRED libxml-2.0)
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
+
 include_directories(${CURL_INCLUDE_DIRS} ${XML_INCLUDE_DIRS})
 include(${wxWidgets_USE_FILE})
 

@@ -9,11 +9,11 @@
 
 
 int main(int argc, char *argv[]){
-    wxEntryStart(argc, argv);
+    /*wxEntryStart(argc, argv);
     wxTheApp->CallOnInit();
-    wxTheApp->OnRun();
+    wxTheApp->OnRun();*/
 
-    /*Config conf;
+    Config conf;
 
     time_t start = clock();
 
@@ -21,7 +21,7 @@ int main(int argc, char *argv[]){
 
     time_t end = clock();
 
-    std::cout << (end-start)/100000.0f << std::endl;*/
+    std::cout << (end-start)/100000.0f << std::endl;
 
     return 0;
 }
