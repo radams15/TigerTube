@@ -11,12 +11,11 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 find_package(PkgConfig REQUIRED)
-find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
-#pkg_check_modules(CURL REQUIRED libcurl)
+find_package(Qt4 COMPONENTS QtCore QtGui phonon REQUIRED)
 pkg_check_modules(XML REQUIRED libxml-2.0)
 
 include_directories(regex regex/includes ${CURL_INCLUDE_DIRS} ${XML_INCLUDE_DIRS})
 
-add_executable(youtubecli main.cpp  Net.cpp Net.h Channel.cpp Channel.h Video.cpp Video.h Config.cpp Config.h Fs.cpp Fs.h regex/Regex.cpp regex/RegexUtils.cpp regex/RegexUtils.hpp MainWindow.cpp MainWindow.h VideoTable.cpp VideoTable.h)
+add_executable(youtubecli main.cpp  Net.cpp Net.h Channel.cpp Channel.h Video.cpp Video.h Config.cpp Config.h Fs.cpp Fs.h regex/Regex.cpp regex/RegexUtils.cpp regex/RegexUtils.hpp MainWindow.cpp MainWindow.h VideoTable.cpp VideoTable.h VideoPlayer.cpp VideoPlayer.h)
 
-target_link_libraries(youtubecli PRIVATE Qt4::QtGui ${CURL_LIBRARIES} ${XML_LIBRARIES})
+target_link_libraries(youtubecli PRIVATE Qt4::QtGui Qt4::phonon ${CURL_LIBRARIES} ${XML_LIBRARIES})

@@ -7,6 +7,8 @@
 
 #include <QtGui/QMainWindow>
 
+#include <Phonon/VideoPlayer>
+
 #include "Config.h"
 #include "VideoTable.h"
 
@@ -31,6 +33,8 @@ private:
 
     VideoTable* table;
     Config *conf;
+
+    Phonon::VideoPlayer* player;
 
     void videoSelected(Video vid);
 };

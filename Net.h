@@ -9,12 +9,16 @@
 
 namespace Net {
 
+    typedef void (*stream_cb)(void*, size_t);
+
     struct Response{
         int status_code;
         std::string content;
     };
 
     Response get(std::string url);
+
+    int stream(std::string url, stream_cb stream_func);
 }
 
 

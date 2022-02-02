@@ -7,8 +7,13 @@
 
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QPushButton>
+#include <QtCore/Qurl>
+#include <QtCore/QBuffer>
+#include <Phonon/MediaSource>
 
 #include <iostream>
+
+QBuffer* vidBuf = NULL;
 
 MainWindow::MainWindow(Config *conf) {
 
@@ -19,6 +24,7 @@ MainWindow::MainWindow(Config *conf) {
     setWindowTitle("TigerTube");
 
     table = new VideoTable;
+    player = new Phonon::VideoPlayer();
 
     QPushButton* playButton = new QPushButton("Play");
 
@@ -26,6 +32,7 @@ MainWindow::MainWindow(Config *conf) {
 
     layout->addWidget(table);
     layout->addWidget(playButton);
+    layout->addWidget(player);
 
 
     QWidget *widget = new QWidget;
@@ -47,26 +54,33 @@ std::string chomp(std::string str){
     return str;
 }
 
+void streamWrite(void* data, size_t len){
+    if(vidBuf != NULL){
+        vidBuf->write((const char*) data, (qint64) len);
+
+        std::cout << vidBuf->size() << "\n";
+    }
+}
+
 void MainWindow::videoSelected(Video vid) {
+    if(vidBuf != NULL) {
+        delete vidBuf;
+    }
+    vidBuf = new QBuffer;
+    vidBuf->setBuffer(new QByteArray);
+    vidBuf->open(QIODevice::ReadWrite);
+
     std::string url = API_URL + vid.link + "&quality=best[height<=" + std::to_string(conf->quality) + "]";
 
     std::string link = chomp(Net::get(url).content);
 
-    //https://doc.qt.io/qt-5/qmediaplayer.html#details
+    std::cout << link << std::endl;
 
-    std::string command;
-#ifdef __linux
-    command = PLAYER " '" + link + "' &";
-#elif defined(__APPLE__)
-    system("osascript -e 'quit app \"" PLAYER "\"'");
-    command = "open -a '" PLAYER "' '" + link + "' &";
-#else
-#error "Unknown/Unsupported OS!"
-#endif
+    Net::stream(link, streamWrite);
 
-    std::cout << command << std::endl;
+    Phonon::MediaSource source(vidBuf);
 
-    system(command.c_str());
+    player->play(source);
 }
 
 
