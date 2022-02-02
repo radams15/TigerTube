@@ -7,16 +7,10 @@
 
 #include <QtGui/QMainWindow>
 
-#include <Phonon/VideoPlayer>
 
 #include "Config.h"
 #include "VideoTable.h"
-
-#ifdef __linux
-#define PLAYER "flatpak run org.videolan.VLC"
-#elif defined(__APPLE__)
-#define PLAYER "VLC"
-#endif
+#include "VideoPlayer.h"
 
 #define API_URL "http://therhys.co.uk/yt.php?url="
 
@@ -34,7 +28,8 @@ private:
     VideoTable* table;
     Config *conf;
 
-    Phonon::VideoPlayer* player;
+    VideoPlayer* player;
+
 
     void videoSelected(Video vid);
 };

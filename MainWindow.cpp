@@ -13,7 +13,6 @@
 
 #include <iostream>
 
-QBuffer* vidBuf = NULL;
 
 MainWindow::MainWindow(Config *conf) {
 
@@ -24,7 +23,8 @@ MainWindow::MainWindow(Config *conf) {
     setWindowTitle("TigerTube");
 
     table = new VideoTable;
-    player = new Phonon::VideoPlayer();
+
+    player = new VideoPlayer;
 
     QPushButton* playButton = new QPushButton("Play");
 
@@ -54,33 +54,15 @@ std::string chomp(std::string str){
     return str;
 }
 
-void streamWrite(void* data, size_t len){
-    if(vidBuf != NULL){
-        vidBuf->write((const char*) data, (qint64) len);
-
-        std::cout << vidBuf->size() << "\n";
-    }
-}
 
 void MainWindow::videoSelected(Video vid) {
-    if(vidBuf != NULL) {
-        delete vidBuf;
-    }
-    vidBuf = new QBuffer;
-    vidBuf->setBuffer(new QByteArray);
-    vidBuf->open(QIODevice::ReadWrite);
-
     std::string url = API_URL + vid.link + "&quality=best[height<=" + std::to_string(conf->quality) + "]";
 
     std::string link = chomp(Net::get(url).content);
 
     std::cout << link << std::endl;
 
-    Net::stream(link, streamWrite);
-
-    Phonon::MediaSource source(vidBuf);
-
-    player->play(source);
+    player->playVideo(link);
 }
 
 
